@@ -1,78 +1,30 @@
 /** @odoo-module **/
-import {
-    Many2ManyTagsField,
-    Many2ManyTagsFieldColorEditable,
-    many2ManyTagsField,
-} from "@web/views/fields/many2many_tags/many2many_tags_field";
 import {Many2OneField, many2OneField} from "@web/views/fields/many2one/many2one_field";
+import {
+    AvatarMany2XAutocomplete,
+    Many2XAutocomplete,
+} from "@web/views/fields/relational_utils";
+import {many2ManyTagsField} from "@web/views/fields/many2many_tags/many2many_tags_field";
 import {FormController} from "@web/views/form/form_controller";
-import {
-    KanbanMany2OneAvatarField,
-    Many2OneAvatarField,
-} from "@web/views/fields/many2one_avatar/many2one_avatar_field";
-import {
-    KanbanMany2ManyTagsAvatarField,
-    Many2ManyTagsAvatarField,
-} from "@web/views/fields/many2many_tags_avatar/many2many_tags_avatar_field";
-
-import {Many2XAutocomplete} from "@web/views/fields/relational_utils";
+import {fieldColorProps} from "../views/fields/standard_field_props.esm.js";
 import {evaluateBooleanExpr} from "@web/core/py_js/py";
 import {isX2Many} from "@web/views/utils";
 import {patch} from "@web/core/utils/patch";
 import {session} from "@web/session";
 
-const fieldColorProps = {
-    fieldColor: {type: String, optional: true},
-    fieldColorOptions: {type: Object, optional: true},
-};
+function evaluateSystemParameterDefaultTrue(option) {
+    const isOptionSet = session.web_m2x_options[`web_m2x_options.${option}`];
+    return isOptionSet ? evaluateBooleanExpr(isOptionSet) : true;
+}
 
-Many2OneField.props = {
-    ...Many2OneField.props,
-    noSearchMore: {type: Boolean, optional: true},
+AvatarMany2XAutocomplete.props = {
+    ...AvatarMany2XAutocomplete.props,
     ...fieldColorProps,
 };
 Many2XAutocomplete.props = {
     ...Many2XAutocomplete.props,
     ...fieldColorProps,
 };
-
-KanbanMany2OneAvatarField.props = {
-    ...KanbanMany2OneAvatarField.props,
-    ...fieldColorProps,
-};
-
-Many2OneAvatarField.props = {
-    ...Many2OneAvatarField.props,
-    noSearchMore: {type: Boolean, optional: true},
-    ...fieldColorProps,
-};
-
-Many2ManyTagsField.props = {
-    ...Many2ManyTagsField.props,
-    searchLimit: {type: Number, optional: true},
-    ...fieldColorProps,
-};
-
-Many2ManyTagsFieldColorEditable.props = {
-    ...Many2ManyTagsFieldColorEditable.props,
-    searchLimit: {type: Number, optional: true},
-    ...fieldColorProps,
-};
-
-Many2ManyTagsAvatarField.props = {
-    ...Many2ManyTagsAvatarField.props,
-    ...fieldColorProps,
-};
-
-KanbanMany2ManyTagsAvatarField.props = {
-    ...KanbanMany2ManyTagsAvatarField.props,
-    ...fieldColorProps,
-};
-
-function evaluateSystemParameterDefaultTrue(option) {
-    const isOptionSet = session.web_m2x_options[`web_m2x_options.${option}`];
-    return isOptionSet ? evaluateBooleanExpr(isOptionSet) : true;
-}
 
 patch(many2OneField, {
     m2o_options_props_create(props, attrs, options) {

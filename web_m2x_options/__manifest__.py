@@ -20,12 +20,20 @@
     "assets": {
         "web.assets_backend": [
             (
+                "after",
+                "web/static/src/views/fields/standard_field_props.js",
+                "web_m2x_options/static/src/views/fields/standard_field_props.esm.js",
+            ),
+            (
                 "before",
                 "web/static/src/views/fields/*",
                 "web_m2x_options/static/src/components/form.esm.js",
             ),
             "web_m2x_options/static/src/components/base.xml",
-        ]
+        ],
+        "web.qunit_suite_tests": [
+            "web_m2x_options/static/tests/m2x_widget_view_test.esm.js",
+        ],
     },
     "installable": True,
 }
